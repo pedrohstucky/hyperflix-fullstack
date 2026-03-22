@@ -5,16 +5,14 @@ const HeroSection = () => {
     <section className="w-full grid grid-cols-1 md:grid-cols-5 gap-6 mt-8">
       <HeroCardItem
         className="md:col-span-2"
-        title={"Top Gun:\nMaverick"}
-        imageUrl="https://m.media-amazon.com/images/M/MV5BMDBkZDNjMWEtOTdmMi00NmExLTg5MmMtNTFlYTJlNWY5YTdmXkEyXkFqcGc@._V1_SX300.jpg"
-        bgColorHex="#B29965"
+        title={"Mercy:\nProva de Culpa"}
+        imageUrl="https://media.themoviedb.org/t/p/original/uNUJHzDGR6WeVibUn0hm6FJbMdh.jpg"
       />
 
       <HeroCardItem
         className="md:col-span-3"
-        title={"Brooklyn\nNine-Nine"}
-        imageUrl="https://m.media-amazon.com/images/M/MV5BNzBiODQxZTUtNjc0MC00Yzc1LThmYTMtN2YwYTU3NjgxMmI4XkEyXkFqcGc@._V1_SX300.jpg"
-        bgColorHex="#5A6A71"
+        title={"Avatar:\nFogo e Cinzas"}
+        imageUrl="https://media.themoviedb.org/t/p/original/ywSmtzjp3ueZeGsrzXJsUDnMcqE.jpg"
       />
     </section>
   );
