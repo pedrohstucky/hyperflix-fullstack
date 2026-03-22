@@ -32,13 +32,16 @@ function App() {
     fetchTrendingMovies();
   }, []);
 
+  const heroMovies = trendingMovies.slice(-14);
+  const listMovies = trendingMovies.slice(0);
+
   return (
     <div className="min-h-screen text-white font-sans w-full bg-linear-to-b from-[#596267] to-[#404A4D] overflow-x-hidden">
       <header className="px-6 md:px-10">
         <Header />
       </header>
       <main className="px-6 md:px-10 pb-12">
-        <HeroSection />
+        <HeroSection movies={heroMovies} />
         <CategoryNav />
 
         {isLoading ? (
@@ -48,7 +51,7 @@ function App() {
             </span>
           </div>
         ) : (
-          <MovieList title="Em alta no momento" movies={trendingMovies} />
+          <MovieList title="Em alta no momento" movies={listMovies} />
         )}
       </main>
     </div>

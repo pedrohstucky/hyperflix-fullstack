@@ -13,6 +13,8 @@ const HeroCardItem = ({ title, imageUrl, className }: HeroCardItemProps) => {
   const [bgColor, setBgColor] = useState<string>("#1e293b");
   const imgRef = useRef<HTMLImageElement>(null);
 
+  const proxiedImageUrl = `https://wsrv.nl/?url=${encodeURIComponent(imageUrl)}`;
+
   const handleImageLoad = () => {
     if (imgRef.current) {
       try {
@@ -44,7 +46,7 @@ const HeroCardItem = ({ title, imageUrl, className }: HeroCardItemProps) => {
       <div className="absolute top-0 right-0 w-[65%] h-full flex justify-end">
         <img
           ref={imgRef}
-          src={imageUrl}
+          src={proxiedImageUrl}
           alt={title}
           crossOrigin="anonymous"
           onLoad={handleImageLoad}
@@ -57,17 +59,16 @@ const HeroCardItem = ({ title, imageUrl, className }: HeroCardItemProps) => {
         />
       </div>
 
-      <CardContent className="relative z-20 flex flex-col justify-center h-full p-5 md:p-10 w-2/3 pointer-events-none">
-        <h1 className="text-4xl md:text-5xl font-bold mb-8 whitespace-pre-line leading-tight drop-shadow-lg">
-          {title}
-        </h1>
-
-        <div className="flex items-center gap-2 w-fit pointer-events-auto group-hover:text-white/80 group-hover:bg-[#121212]/90 transition-colors bg-[#121212] px-4 py-2 rounded-full">
-          <Play
-            size={16}
-            className="fill-white group-hover:fill-white/80 transition-colors"
-          />
-          <span className="font-medium text-sm">Assistir Agora</span>
+      <CardContent className="relative z-20 flex flex-col justify-center h-full p-5 md:p-10 w-2/3">
+        <h1 className="text-4xl font-bold mb-8 drop-shadow-lg">{title}</h1>
+        <div className="flex gap-3 items-center">
+          <div className="flex items-center w-10 h-10 group-hover:text-white/80 group-hover:bg-[#121212]/90 transition-colors bg-[#121212] px-4 py-2 rounded-full">
+            <Play
+              size={16}
+              className="fill-white group-hover:fill-white/80 transition-colors"
+            />
+          </div>
+          <span className="font-medium text-sm">Obter Informações</span>
         </div>
       </CardContent>
     </Card>
