@@ -1,58 +1,18 @@
-import { useEffect, useState } from "react";
-import CategoryNav from "./components/CategoryNav";
+import { Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
-import HeroSection from "./components/HeroSection";
-import { MovieList, type Movie } from "./components/MovieList";
+import Home from "./pages/Home";
 
 function App() {
-  const [trendingMovies, setTrendingMovies] = useState<Movie[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchTrendingMovies = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:8080/api/v1/catalog/trending",
-        );
-
-        if (!response.ok) {
-          throw new Error("Erro ao buscar filmes no servidor");
-        }
-
-        const data = await response.json();
-
-        setTrendingMovies(data);
-      } catch (error) {
-        console.error("Erro na comunicação com o backend: ", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchTrendingMovies();
-  }, []);
-
-  const heroMovies = trendingMovies.slice(-14);
-  const listMovies = trendingMovies.slice(0);
-
   return (
     <div className="min-h-screen text-white font-sans w-full bg-linear-to-b from-[#596267] to-[#404A4D] overflow-x-hidden">
       <header className="px-6 md:px-10">
         <Header />
       </header>
-      <main className="px-6 md:px-10 pb-12">
-        <HeroSection movies={heroMovies} />
-        <CategoryNav />
 
-        {isLoading ? (
-          <div className="flex justify-center items-center py-20">
-            <span className="text-white/60 font-medium text-lg animate-pulse">
-              Carregando catálogo...
-            </span>
-          </div>
-        ) : (
-          <MovieList title="Em alta no momento" movies={listMovies} />
-        )}
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
       </main>
     </div>
   );
