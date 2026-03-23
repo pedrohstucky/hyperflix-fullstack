@@ -14,9 +14,7 @@ function Home() {
           "http://localhost:8080/api/v1/catalog/trending",
         );
 
-        if (!response.ok) {
-          throw new Error("Erro ao buscar filmes no servidor");
-        }
+        if (!response.ok) throw new Error("Erro ao buscar filmes no servidor");
 
         const data = await response.json();
 

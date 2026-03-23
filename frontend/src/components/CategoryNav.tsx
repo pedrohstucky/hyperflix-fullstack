@@ -12,18 +12,19 @@ import {
 } from "lucide-react";
 import React, { useRef, useState } from "react";
 import CategoryButton from "./CategoryButton";
+import { useNavigate } from "react-router-dom";
 
 const categories = [
-  { label: "Em alta", icon: Flame },
-  { label: "Ação", icon: Swords },
-  { label: "Aventura", icon: Compass },
-  { label: "Terror", icon: Ghost },
-  { label: "Romance", icon: Heart },
-  { label: "Comédia", icon: Smile },
-  { label: "Animação", icon: Clapperboard },
-  { label: "Drama", icon: VenetianMask },
-  { label: "Ficção Científica", icon: Atom },
-  { label: "Documentário", icon: BookOpen },
+  { label: "Em alta", icon: Flame, id: 0 },
+  { label: "Ação", icon: Swords, id: 28 },
+  { label: "Aventura", icon: Compass, id: 12 },
+  { label: "Terror", icon: Ghost, id: 27 },
+  { label: "Romance", icon: Heart, id: 10749 },
+  { label: "Comédia", icon: Smile, id: 35 },
+  { label: "Animação", icon: Clapperboard, id: 16 },
+  { label: "Drama", icon: VenetianMask, id: 18 },
+  { label: "Ficção Científica", icon: Atom, id: 878 },
+  { label: "Documentário", icon: BookOpen, id: 99 },
 ];
 
 const CategoryNav = () => {
@@ -34,6 +35,8 @@ const CategoryNav = () => {
   const scrollLeft = useRef(0);
 
   const isDragging = useRef(false);
+
+  const navigate = useNavigate();
 
   const handleMouseDown = (e: React.MouseEvent) => {
     isDown.current = true;
@@ -61,9 +64,22 @@ const CategoryNav = () => {
     sliderRef.current.scrollLeft = scrollLeft.current - walk;
   };
 
-  const handleCategoryClick = (label: string) => {
+  const handleCategoryClick = (label: string, id: number) => {
     if (!isDragging.current) {
       setActiveCategory(label);
+
+      if (id === 0) {
+        navigate("/");
+        return;
+      }
+
+      const slug = label
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, "-");
+
+      navigate(`/category/${id}?name=${slug}`);
     }
   };
 
@@ -82,7 +98,7 @@ const CategoryNav = () => {
           label={category.label}
           icon={category.icon}
           isActive={activeCategory === category.label}
-          onClick={() => handleCategoryClick(category.label)}
+          onClick={() => handleCategoryClick(category.label, category.id)}
         />
       ))}
     </nav>

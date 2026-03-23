@@ -1,13 +1,11 @@
 package br.com.streaming.hyperflix.controller;
 
+import br.com.streaming.hyperflix.dto.MoviePageResponseDTO;
 import br.com.streaming.hyperflix.dto.MovieResponseDTO;
 import br.com.streaming.hyperflix.service.TmdbService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +20,13 @@ public class CatalogController {
     public ResponseEntity<List<MovieResponseDTO>> getTrending() {
         List<MovieResponseDTO> trendingMovies = tmdbService.getTrending();
         return ResponseEntity.ok(trendingMovies);
+    }
+
+    @GetMapping("/discover")
+    public ResponseEntity<MoviePageResponseDTO> discoverMovies(
+            @RequestParam Integer genreId,
+            @RequestParam(defaultValue = "1") Integer page
+    ) {
+        return ResponseEntity.ok(tmdbService.discoverMoviesByGenre(genreId, page));
     }
 }

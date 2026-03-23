@@ -5,11 +5,20 @@ interface MovieCardProps {
   imageUrl: string;
   rating: number;
   year: number;
+  className: string;
 }
 
-export function MovieCard({ title, imageUrl, rating, year }: MovieCardProps) {
+export function MovieCard({
+  title,
+  imageUrl,
+  rating,
+  year,
+  className,
+}: MovieCardProps) {
   return (
-    <div className="flex flex-col gap-3 w-45 shrink-0 sm:w-55 cursor-pointer group">
+    <div
+      className={`flex flex-col gap-3 w-45 shrink-0 sm:w-60 cursor-pointer group select-none ${className || "w-45 sm:w-55"}`}
+    >
       <div className="overflow-hidden rounded-2xl aspect-2/3 bg-slate-800 hover:shadow-xl">
         <img
           src={imageUrl}

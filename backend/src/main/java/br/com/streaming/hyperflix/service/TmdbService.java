@@ -1,5 +1,6 @@
 package br.com.streaming.hyperflix.service;
 
+import br.com.streaming.hyperflix.dto.MoviePageResponseDTO;
 import br.com.streaming.hyperflix.dto.MovieResponseDTO;
 import br.com.streaming.hyperflix.dto.tmdb.TmdbPageResponseDTO;
 import br.com.streaming.hyperflix.dto.tmdb.TmdbResultDTO;
@@ -36,6 +37,23 @@ public class TmdbService {
         return response.getResults().stream()
                 .map(this::convertToFrontendDTO)
                 .collect(Collectors.toList());
+    }
+
+    public MoviePageResponseDTO discoverMoviesByGenre(Integer genreId, Integer page) {
+        String url = "/discover/movie?language=pt-BR&sort_by=popularity.desc&with_genres=" + genreId + "&page=" + page;
+
+        TmdbPageResponseDTO response = restClient.get()
+                .uri(url)
+                .retrieve()
+                .body(TmdbPageResponseDTO.class);
+
+        if (response == null || response.getResults() == null) return new MoviePageResponseDTO(1, 1, List.of());
+
+        List<MovieResponseDTO> movies = response.getResults().stream()
+                .map(this::convertToFrontendDTO)
+                .collect(Collectors.toList());
+
+        return new MoviePageResponseDTO(response.getPage(), response.getTotalPages(), movies);
     }
 
     private MovieResponseDTO convertToFrontendDTO(TmdbResultDTO tmdbDto) {
