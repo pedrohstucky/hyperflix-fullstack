@@ -33,7 +33,7 @@ function Home() {
   const listMovies = trendingMovies.slice(0);
 
   return (
-    <div className="min-h-screen text-white font-sans w-full bg-linear-to-b from-[#596267] to-[#404A4D] overflow-x-hidden">
+    <div className="min-h-screen text-white font-sans w-full overflow-x-hidden">
       <main className="px-6 md:px-10 pb-12">
         <HeroSection movies={heroMovies} />
         <CategoryNav />

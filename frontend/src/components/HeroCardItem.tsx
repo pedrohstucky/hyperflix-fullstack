@@ -62,7 +62,7 @@ const HeroCardItem = ({ title, imageUrl, className }: HeroCardItemProps) => {
       <CardContent className="relative z-20 flex flex-col justify-center h-full p-5 md:p-10 w-2/3">
         <h1 className="text-4xl font-bold mb-8 drop-shadow-lg">{title}</h1>
         <div className="flex gap-3 items-center">
-          <div className="flex items-center w-10 h-10 group-hover:text-white/80 group-hover:bg-[#121212]/90 transition-colors bg-[#121212] px-4 py-2 rounded-full">
+          <div className="flex items-center w-10 h-10 group-hover:text-white/80 group-hover:bg-black/80 transition-colors bg-black px-4 py-2 rounded-full">
             <Play
               size={16}
               className="fill-white group-hover:fill-white/80 transition-colors"

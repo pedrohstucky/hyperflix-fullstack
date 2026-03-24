@@ -72,7 +72,7 @@ function CategoryPage() {
           <Button
             key={p}
             onClick={() => setCurrentPage(p)}
-            className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${currentPage === p ? "bg-[#121212] text-white}" : "text-white hover:bg-[#121212] bg-transparent cursor-pointer"}`}
+            className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${currentPage === p ? "bg-black text-white}" : "text-white hover:bg-black/80 bg-transparent cursor-pointer"}`}
           >
             {p}
           </Button>
@@ -87,12 +87,12 @@ function CategoryPage() {
         <div className="flex items-center gap-3 mb-8">
           <Button
             onClick={() => navigate("/")}
-            className="w-10 h-10 rounded-full bg-[#121212] flex items-center justify-center hover:bg-[#121212]/40 transition-colors cursor-pointer"
+            className="w-10 h-10 rounded-full bg-black flex items-center justify-center hover:bg-black/80 transition-colors cursor-pointer"
           >
             <ChevronLeft size={16} className="text-white" />
           </Button>
 
-          <div className="bg-[#121212] px-6 py-2 rounded-full">
+          <div className="bg-black px-6 py-2 rounded-full">
             <h2 className="text-white font-bold text-xl">{genreName}</h2>
           </div>
         </div>

@@ -23,7 +23,7 @@ const Header = () => {
       </div>
 
       <div className="w-full md:w-auto flex justify-center order-last md:order-0">
-        <div className="bg-[#121212] rounded-full p-1 flex items-center justify-between w-full md:w-95 max-w-105 pl-9 sm:pl-7 md:pl-8 relative overflow-hidden transition-all duration-300 shadow-md">
+        <div className="bg-black rounded-full p-1 flex items-center justify-between w-full md:w-95 max-w-105 pl-9 sm:pl-7 md:pl-8 relative overflow-hidden transition-all duration-300 shadow-md">
           <div
             className={`flex items-center justify-between w-full transition-all duration-300 pr-4 ${
               isSearching
@@ -64,7 +64,7 @@ const Header = () => {
               setIsSearching(!isSearching);
               if (isSearching) setSearchValue("");
             }}
-            className="cursor-pointer p-2.5 bg-[#2b2b2b] rounded-full z-10 hover:bg-[#3d3d3d] transition-colors shrink-0"
+            className="cursor-pointer p-2.5 bg-[#101010] rounded-full z-10 hover:bg-[#1d1d1d] transition-colors shrink-0"
           >
             {isSearching ? (
               <X className="text-white" size={20} />

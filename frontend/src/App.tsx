@@ -5,7 +5,7 @@ import CategoryPage from "./pages/CategoryPage";
 
 function App() {
   return (
-    <div className="min-h-screen text-white font-sans w-full bg-linear-to-b from-[#596267] to-[#404A4D] overflow-x-hidden">
+    <div className="min-h-screen text-white font-sans w-full bg-linear-to-b from-[#131619] to-[#101E27] overflow-x-hidden">
       <header className="px-6 md:px-10">
         <Header />
       </header>

@@ -5,7 +5,7 @@ interface MovieCardProps {
   imageUrl: string;
   rating: number;
   year: number;
-  className: string;
+  className?: string;
 }
 
 export function MovieCard({
