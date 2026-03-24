@@ -29,4 +29,12 @@ public class CatalogController {
     ) {
         return ResponseEntity.ok(tmdbService.discoverMoviesByGenre(genreId, page));
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<MoviePageResponseDTO> search(
+            @RequestParam String query,
+            @RequestParam(defaultValue = "1") Integer page
+    ) {
+        return ResponseEntity.ok(tmdbService.searchMovies(query, page));
+    }
 }

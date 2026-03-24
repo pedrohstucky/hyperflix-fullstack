@@ -56,6 +56,26 @@ public class TmdbService {
         return new MoviePageResponseDTO(response.getPage(), response.getTotalPages(), movies);
     }
 
+    public MoviePageResponseDTO searchMovies(String query, Integer page) {
+        if (query == null || query.trim().isEmpty()) return new MoviePageResponseDTO(1, 1, List.of());
+
+        var url = "/search/multi?language=pt-BR&query=" + query + "&page=" + page;
+
+        TmdbPageResponseDTO response = restClient.get()
+                .uri(url)
+                .retrieve()
+                .body(TmdbPageResponseDTO.class);
+
+        if (response == null || response.getResults() == null) return new MoviePageResponseDTO(1, 1, List.of());
+
+        List<MovieResponseDTO> movies = response.getResults().stream()
+                .filter(item -> "movie".equals(item.getMediaType()) || "tv".equals(item.getMediaType()))
+                .map(this::convertToFrontendDTO)
+                .collect(Collectors.toList());
+
+        return new MoviePageResponseDTO(response.getPage(), response.getTotalPages(), movies);
+    }
+
     private MovieResponseDTO convertToFrontendDTO(TmdbResultDTO tmdbDto) {
         String title = tmdbDto.getTitle() != null ? tmdbDto.getTitle() : tmdbDto.getName();
 

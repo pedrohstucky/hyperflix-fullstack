@@ -17,6 +17,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @WebMvcTest(CatalogController.class)
 class CatalogControllerTest {
@@ -45,6 +46,7 @@ class CatalogControllerTest {
 
         mockMvc.perform(get("/api/v1/catalog/trending")
                         .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.size()").value(1))
@@ -75,6 +77,7 @@ class CatalogControllerTest {
                         .param("genreId", String.valueOf(genreId))
                         .param("page", String.valueOf(page))
                         .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.page").value(2))
                 .andExpect(jsonPath("$.totalPages").value(10))
@@ -96,9 +99,38 @@ class CatalogControllerTest {
         mockMvc.perform(get("/api/v1/catalog/discover")
                         .param("genreId", String.valueOf(genreId))
                         .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.page").value(1));
 
         verify(tmdbService).discoverMoviesByGenre(genreId, defaultPage);
+    }
+
+    @Test
+    @DisplayName("Deve buscar título por texto e retornar a lista de resultados paginada")
+    void shouldSearchMoviesByTitle() throws Exception {
+        var query = "Batman";
+        var mockPageResponse = MoviePageResponseDTO.builder()
+                .page(1)
+                .totalPages(5)
+                .results(List.of(
+                        MovieResponseDTO.builder().id(1L).title("The Batman").build(),
+                        MovieResponseDTO.builder().id(2L).title("Batman Begins").build()
+                ))
+                .build();
+
+        given(tmdbService.searchMovies(query, 1)).willReturn(mockPageResponse);
+
+        mockMvc.perform(get("/api/v1/catalog/search")
+                        .param("query", query)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.results.size()").value(2))
+                .andExpect(jsonPath(".results[0].title").value("The Batman"))
+                .andExpect(jsonPath("$.results[1].title").value("Batman Begins"));
+
+        verify(tmdbService).searchMovies(query, 1);
+
     }
 }
