@@ -8,4 +8,4 @@ WORKDIR /app
 COPY --from=build /target/*.jar app.jar
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar", "--server.port=${PORT:8080}"]
+ENTRYPOINT ["java", "-Xmx384m", "-Xms128m", "-jar", "app.jar", "--server.port=${PORT:8080}"]

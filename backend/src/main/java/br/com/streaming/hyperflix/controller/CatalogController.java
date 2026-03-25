@@ -36,4 +36,7 @@ public class CatalogController {
     ) {
         return ResponseEntity.ok(tmdbService.searchMovies(query, page));
     }
+
+    @GetMapping("/health")
+    public String health() { return "OK"; }
 }
