@@ -38,7 +38,7 @@ function CategoryPage() {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/catalog/discover?genreId=${id}&page=${currentPage}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/catalog/discover?genreId=${id}&page=${currentPage}`,
         );
         if (response.ok) {
           const json = await response.json();

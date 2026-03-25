@@ -38,5 +38,7 @@ public class CatalogController {
     }
 
     @GetMapping("/health")
-    public String health() { return "OK"; }
+    public ResponseEntity<String> health() {
+        return ResponseEntity.ok("OK");
+    }
 }

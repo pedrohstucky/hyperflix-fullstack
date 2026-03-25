@@ -11,7 +11,7 @@ function Home() {
     const fetchTrendingMovies = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/v1/catalog/trending",
+          `${import.meta.env.VITE_API_URL}/api/v1/catalog/trending`,
         );
 
         if (!response.ok) throw new Error("Erro ao buscar filmes no servidor");

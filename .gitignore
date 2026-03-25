@@ -28,6 +28,10 @@ Thumbs.db
 **/yarn-debug.log*
 **/yarn-error.log*
 
+# --- ENV ---
+.env
+.env.production
+
 # --- Arquivos de Build e Binários ---
 **/build/
 **/*.jar

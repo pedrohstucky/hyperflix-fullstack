@@ -19,7 +19,7 @@ const Header = () => {
       const searchTerm = searchValue.trim();
 
       const response = await fetch(
-        `http://localhost:8080/api/v1/catalog/search?query=${encodeURIComponent(searchTerm)}&page=1`,
+        `${import.meta.env.VITE_API_URL}/api/v1/catalog/search?query=${encodeURIComponent(searchTerm)}&page=1`,
       );
 
       if (!response.ok) throw new Error("Erro na API");
