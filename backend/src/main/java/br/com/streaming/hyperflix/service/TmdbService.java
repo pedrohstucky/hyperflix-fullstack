@@ -40,7 +40,9 @@ public class TmdbService {
     }
 
     public MoviePageResponseDTO discoverMoviesByGenre(Integer genreId, Integer page) {
-        String url = "/discover/movie?language=pt-BR&sort_by=popularity.desc&with_genres=" + genreId + "&page=" + page;
+        int safePage = (page == null || page < 1) ? 1 : page;
+        String endpoint = (genreId == 10759 || genreId == 16) ? "/discover/tv" : "/discover/movie";
+        String url = endpoint + "?language=pt-BR&sort_by=popularity.desc&with_genres=" + genreId + "&page=" + safePage;
 
         TmdbPageResponseDTO response = restClient.get()
                 .uri(url)
@@ -57,12 +59,14 @@ public class TmdbService {
     }
 
     public MoviePageResponseDTO searchMovies(String query, Integer page) {
-        if (query == null || query.trim().isEmpty()) return new MoviePageResponseDTO(1, 1, List.of());
+        if (query == null || query.trim().isEmpty()) {
+            return new MoviePageResponseDTO(1, 1, List.of());
+        }
 
-        var url = "/search/multi?language=pt-BR&query=" + query + "&page=" + page;
+        int safePage = (page == null || page < 1) ? 1 : page;
 
         TmdbPageResponseDTO response = restClient.get()
-                .uri(url)
+                .uri("/search/multi?language=pt-BR&query={query}&page={page}", query, safePage)
                 .retrieve()
                 .body(TmdbPageResponseDTO.class);
 

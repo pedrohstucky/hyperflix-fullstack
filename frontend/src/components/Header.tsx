@@ -1,16 +1,76 @@
-import { Bell, Search, X, Menu, User } from "lucide-react";
-import { useState } from "react";
+import { Bell, Search, X, Menu, User, Loader2 } from "lucide-react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [count, setCount] = useState(5);
   const [isSearching, setIsSearching] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isFetchingSearch, setIsFetchingSearch] = useState(false);
+
+  const navigate = useNavigate();
+
+  const executeSearch = async () => {
+    if (!searchValue.trim()) return;
+
+    try {
+      setIsFetchingSearch(true);
+      const searchTerm = searchValue.trim();
+
+      const response = await fetch(
+        `http://localhost:8080/api/v1/catalog/search?query=${encodeURIComponent(searchTerm)}&page=1`,
+      );
+
+      if (!response.ok) throw new Error("Erro na API");
+
+      const data = await response.json();
+
+      setIsSearching(false);
+
+      if (data.results && data.results.length === 1) {
+        const uniqueMovie = data.results[0];
+        navigate(`/title/${uniqueMovie.id}`);
+      } else {
+        navigate(`/search?q=${encodeURIComponent(searchTerm)}`, {
+          state: { initialData: data },
+        });
+      }
+    } catch (error) {
+      console.error("Erro ao buscar: ", error);
+
+      navigate(`/search?q=${encodeURIComponent(searchValue.trim())}`);
+    } finally {
+      setIsFetchingSearch(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && !isFetchingSearch) {
+      executeSearch();
+    }
+  };
+
+  const goToMovies = () =>
+    navigate("/category/28", {
+      state: { genreName: "Filmes" },
+    });
+  const goToSeries = () =>
+    navigate("/category/10759", {
+      state: { genreName: "Séries" },
+    });
+  const goToAnimes = () =>
+    navigate("/category/16", {
+      state: { genreName: "Animes" },
+    });
 
   return (
     <header className="relative w-full py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div className="flex items-center justify-between w-full md:w-auto">
-        <h1 className="font-black uppercase text-3xl md:text-4xl text-white tracking-tighter">
+      <div className="flex items-center justify-between w-full md:w-auto cursor-pointer">
+        <h1
+          onClick={() => navigate("/")}
+          className="font-black uppercase text-3xl md:text-4xl text-white tracking-tighter"
+        >
           Hyperflix
         </h1>
 
@@ -31,13 +91,22 @@ const Header = () => {
                 : "opacity-100 visible scale-100"
             }`}
           >
-            <p className="text-white text-sm sm:text-base font-medium cursor-pointer hover:text-gray-400 transition-colors">
+            <p
+              onClick={goToSeries}
+              className="text-white text-sm sm:text-base font-medium cursor-pointer hover:text-gray-400 transition-colors"
+            >
               Series
             </p>
-            <p className="text-white text-sm sm:text-base font-medium cursor-pointer hover:text-gray-400 transition-colors">
+            <p
+              onClick={goToMovies}
+              className="text-white text-sm sm:text-base font-medium cursor-pointer hover:text-gray-400 transition-colors"
+            >
               Filmes
             </p>
-            <p className="text-white text-sm sm:text-base font-medium cursor-pointer hover:text-gray-400 transition-colors">
+            <p
+              onClick={goToAnimes}
+              className="text-white text-sm sm:text-base font-medium cursor-pointer hover:text-gray-400 transition-colors"
+            >
               Animes
             </p>
           </div>
@@ -55,18 +124,28 @@ const Header = () => {
               className="bg-transparent w-full text-white text-base sm:text-base outline-none placeholder:text-gray-500 font-medium"
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
+              onKeyDown={handleKeyDown}
               autoFocus={isSearching}
+              disabled={isFetchingSearch}
             />
           </div>
 
           <button
             onClick={() => {
-              setIsSearching(!isSearching);
-              if (isSearching) setSearchValue("");
+              if (isFetchingSearch) return;
+
+              if (isSearching && searchValue.trim() !== "") {
+                executeSearch();
+              } else {
+                setIsSearching(!isSearching);
+                if (isSearching) setSearchValue("");
+              }
             }}
             className="cursor-pointer p-2.5 bg-[#101010] rounded-full z-10 hover:bg-[#1d1d1d] transition-colors shrink-0"
           >
-            {isSearching ? (
+            {isFetchingSearch ? (
+              <Loader2 className="text-white animate-spin" size={20} />
+            ) : isSearching && searchValue === "" ? (
               <X className="text-white" size={20} />
             ) : (
               <Search className="text-white" size={20} />

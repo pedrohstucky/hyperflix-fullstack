@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import CategoryPage from "./pages/CategoryPage";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   return (
@@ -14,6 +15,16 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/category/:id" element={<CategoryPage />} />
+          <Route path="/search" element={<SearchPage />} />
+
+          <Route
+            path="/title/:id"
+            element={
+              <div className="min-h-screen bg-black text-white/60 flex items-center justify-center text-2xl font-bold animate-pulse">
+                Detalhes do Filme sendo construídos...
+              </div>
+            }
+          />
         </Routes>
       </main>
     </div>
