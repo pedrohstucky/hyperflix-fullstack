@@ -12,7 +12,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/catalog")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "https://localhost:5173")
 public class CatalogController {
     private final TmdbService tmdbService;
 
