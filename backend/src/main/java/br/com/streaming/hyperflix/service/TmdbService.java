@@ -2,6 +2,8 @@ package br.com.streaming.hyperflix.service;
 
 import br.com.streaming.hyperflix.dto.MoviePageResponseDTO;
 import br.com.streaming.hyperflix.dto.MovieResponseDTO;
+import br.com.streaming.hyperflix.dto.TitleDetailsResponseDTO;
+import br.com.streaming.hyperflix.dto.tmdb.TmdbDetailsDTO;
 import br.com.streaming.hyperflix.dto.tmdb.TmdbPageResponseDTO;
 import br.com.streaming.hyperflix.dto.tmdb.TmdbResultDTO;
 import org.springframework.beans.factory.annotation.Value;
@@ -78,6 +80,51 @@ public class TmdbService {
                 .collect(Collectors.toList());
 
         return new MoviePageResponseDTO(response.getPage(), response.getTotalPages(), movies);
+    }
+
+    public TitleDetailsResponseDTO getTitleDetails(String type, Long id) {
+        if (!type.equals("movie") && !type.equals("tv")) throw new IllegalArgumentException("Type must be 'movie' or 'tv'");
+
+        TmdbDetailsDTO response = restClient.get()
+                .uri("/{type}/{id}?language=pt-BR", type, id)
+                .retrieve()
+                .body(TmdbDetailsDTO.class);
+
+        if (response == null) throw new RuntimeException("Título não encontrado");
+
+        return convertDetailsToFrontendDTO(response, type);
+    }
+
+    private TitleDetailsResponseDTO convertDetailsToFrontendDTO(TmdbDetailsDTO tmdbDTO, String type) {
+        String title = tmdbDTO.getTitle() != null ? tmdbDTO.getTitle() : tmdbDTO.getName();
+        String rawDate = tmdbDTO.getReleaseDate() != null ? tmdbDTO.getReleaseDate() : tmdbDTO.getFirstAirDate();
+        Integer year = (rawDate != null && rawDate.length() >= 4) ? Integer.parseInt(rawDate.substring(0, 4)) : null;
+
+        String posterUrl = tmdbDTO.getPosterPath() != null ? IMAGE_BASE_URL + tmdbDTO.getPosterPath() : null;
+        String backdropUrl = tmdbDTO.getBackdropPath() != null ? "https://image.tmdb.org/t/p/original" + tmdbDTO.getBackdropPath(): null;
+
+        Integer runtime = tmdbDTO.getRuntime();
+        if (runtime == null && tmdbDTO.getEpisodeRunTime() != null && !tmdbDTO.getEpisodeRunTime().isEmpty()) {
+            runtime = tmdbDTO.getEpisodeRunTime().getFirst();
+        }
+
+        List<String> genreNames = tmdbDTO.getGenres() != null
+                ? tmdbDTO.getGenres().stream().map(TmdbDetailsDTO.GenreDTO::getName).toList()
+                : List.of();
+
+        return TitleDetailsResponseDTO.builder()
+                .id(tmdbDTO.getId())
+                .title(title)
+                .overview(tmdbDTO.getOverview())
+                .posterUrl(posterUrl)
+                .backdropUrl(backdropUrl)
+                .rating(tmdbDTO.getVoteAverage())
+                .year(year)
+                .type(type)
+                .runtime(runtime)
+                .seasons(tmdbDTO.getNumberOfSeasons())
+                .genres(genreNames)
+                .build();
     }
 
     private MovieResponseDTO convertToFrontendDTO(TmdbResultDTO tmdbDto) {

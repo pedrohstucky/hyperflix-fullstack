@@ -2,6 +2,7 @@ package br.com.streaming.hyperflix.controller;
 
 import br.com.streaming.hyperflix.dto.MoviePageResponseDTO;
 import br.com.streaming.hyperflix.dto.MovieResponseDTO;
+import br.com.streaming.hyperflix.dto.TitleDetailsResponseDTO;
 import br.com.streaming.hyperflix.service.TmdbService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.will;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -127,10 +130,54 @@ class CatalogControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.results.size()").value(2))
-                .andExpect(jsonPath(".results[0].title").value("The Batman"))
+                .andExpect(jsonPath("$.results[0].title").value("The Batman"))
                 .andExpect(jsonPath("$.results[1].title").value("Batman Begins"));
 
         verify(tmdbService).searchMovies(query, 1);
 
+    }
+
+    @Test
+    @DisplayName("Deve retornar 200 e os detalhes quando o título for encontrado")
+    void shouldReturnTitleDetailsSuccesfully() throws Exception {
+        String type = "movie";
+        Long id = 550L;
+
+        var mockDetails = TitleDetailsResponseDTO.builder()
+                .id(id)
+                .title("Clube da Luta")
+                .type(type)
+                .overview("Um cara que não consegue dormir cria um clube de briga")
+                .runtime(139)
+                .build();
+
+        given(tmdbService.getTitleDetails(type, id)).willReturn(mockDetails);
+
+        mockMvc.perform(get("/api/v1/catalog/title/{type}/{id}", type, id)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.title").value("Clube da Luta"))
+                .andExpect(jsonPath("$.type").value(type))
+                .andExpect(jsonPath("$.runtime").value(139));
+
+        verify(tmdbService).getTitleDetails(type, id);
+    }
+
+    @Test
+    @DisplayName("Deve retornar 404 quando o título não for encontrado")
+    void shouldReturn404WhenTitleNotFound() throws Exception {
+        String type = "movie";
+        Long id = 999999L;
+
+        given(tmdbService.getTitleDetails(type, id)).willReturn(null);
+
+        mockMvc.perform(get("/api/v1/catalog/title/{type}/{id}", type, id)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+
+        verify(tmdbService).getTitleDetails(type, id);
     }
 }
