@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { MovieCard } from "./MovieCard";
+import { useNavigate } from "react-router-dom";
 
 export interface Movie {
   id: string | number;
@@ -7,6 +8,7 @@ export interface Movie {
   imageUrl: string;
   rating: number;
   year: number;
+  type: string;
 }
 
 interface MovieListProps {
@@ -19,6 +21,7 @@ export function MovieList({ title, movies }: MovieListProps) {
   const isDown = useRef(false);
   const startX = useRef(0);
   const scrollLeft = useRef(0);
+  const navigate = useNavigate();
 
   const handleMouseDown = (e: React.MouseEvent) => {
     isDown.current = true;
@@ -60,6 +63,11 @@ export function MovieList({ title, movies }: MovieListProps) {
       >
         {movies.map((movie) => (
           <MovieCard
+            onClick={() =>
+              navigate(`/title/${movie.id}`, {
+                state: { type: movie.type || "movie" },
+              })
+            }
             key={movie.id}
             title={movie.title}
             imageUrl={movie.imageUrl}

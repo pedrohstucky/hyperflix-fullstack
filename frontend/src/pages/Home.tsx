@@ -34,7 +34,7 @@ function Home() {
 
   return (
     <div className="min-h-screen text-white font-sans w-full overflow-x-hidden">
-      <main className="px-6 md:px-10 pb-12">
+      <main className="px-6 md:px-20 pb-12">
         <HeroSection movies={heroMovies} />
         <CategoryNav />
 

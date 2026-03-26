@@ -6,6 +6,7 @@ interface MovieCardProps {
   rating: number;
   year: number;
   className?: string;
+  onClick: () => void;
 }
 
 export function MovieCard({
@@ -14,9 +15,11 @@ export function MovieCard({
   rating,
   year,
   className,
+  onClick,
 }: MovieCardProps) {
   return (
     <div
+      onClick={onClick}
       className={`flex flex-col gap-3 w-45 shrink-0 sm:w-60 cursor-pointer group select-none ${className || "w-45 sm:w-55"}`}
     >
       <div className="overflow-hidden rounded-2xl aspect-2/3 bg-slate-800 hover:shadow-xl">

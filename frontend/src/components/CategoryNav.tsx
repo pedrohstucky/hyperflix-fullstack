@@ -25,6 +25,7 @@ const categories = [
   { label: "Drama", icon: VenetianMask, id: 18 },
   { label: "Ficção Científica", icon: Atom, id: 878 },
   { label: "Documentário", icon: BookOpen, id: 99 },
+  { label: "Suspense", icon: Ghost, id: 53 },
 ];
 
 const CategoryNav = () => {

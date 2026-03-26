@@ -83,7 +83,7 @@ function CategoryPage() {
 
   return (
     <div className="min-h-screen text-white font-sans w-full overflow-x-hiddens">
-      <main className="px-6 md:px-10 pb-12 mt-6">
+      <main className="px-6 md:px-20 pb-12 mt-6">
         <div className="flex items-center gap-3 mb-8">
           <Button
             onClick={() => navigate("/")}
@@ -105,15 +105,20 @@ function CategoryPage() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 gap-x-5 gap-y-10">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 gap-x-6 gap-y-10">
               {data?.results.map((movie) => (
                 <div key={movie.id} className="w-full">
                   <MovieCard
+                    onClick={() =>
+                      navigate(`/title/${movie.id}`, {
+                        state: { type: movie.type || "movie" },
+                      })
+                    }
+                    key={movie.id}
                     title={movie.title}
                     imageUrl={movie.imageUrl}
                     rating={movie.rating}
                     year={movie.year}
-                    className="w-full"
                   />
                 </div>
               ))}
