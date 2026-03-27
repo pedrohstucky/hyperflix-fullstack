@@ -83,7 +83,7 @@ public class TmdbService {
         return new MoviePageResponseDTO(response.getPage(), response.getTotalPages(), movies);
     }
 
-    public TitleDetailsResponseDTO getTitleDetals(String type, Long id) {
+    public TitleDetailsResponseDTO getTitleDetails(String type, Long id) {
         if (!type.equals("movie") && !type.equals("tv")) {
             throw new IllegalArgumentException("Type must be 'movie' or 'tv'");
         }
