@@ -8,9 +8,9 @@ interface TitleDetailsData {
   overview: string;
   posterUrl: string | null;
   backdropUrl: string | null;
-  rating: number;
-  year: number;
-  type: string;
+  rating: number | null;
+  year: number | null;
+  type: "movie" | "tv";
   runtime: number | null;
   seasons: number | null;
   genres: string[];
@@ -149,19 +149,21 @@ export default function TitleDetails() {
               </p>
             </div>
 
-            <div
+            <button
+              type="button"
               onClick={() => {
                 document
                   .getElementById("trailer-section")
                   ?.scrollIntoView({ behavior: "smooth", block: "center" });
               }}
-              className="max-w-2xl flex items-center mt-7 gap-3 cursor-pointer group"
+              className="max-w-2xl flex items-center mt-7 gap-3 cursor-pointer group w-fit outline-none focus-visible:ring-1 focus-visible:ring-white rounded-lg"
+              aria-label="Rolar para a seção do trailer"
             >
               <div className="bg-black group-hover:bg-black/80 p-3 rounded-full">
                 <Play size={16} className="fill-white" />
               </div>
               <span className="font-semibold text-lg">Assistir ao Trailer</span>
-            </div>
+            </button>
           </div>
         </div>
 
