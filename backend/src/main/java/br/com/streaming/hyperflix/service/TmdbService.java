@@ -95,7 +95,7 @@ public class TmdbService {
         } catch (HttpClientErrorException.NotFound e) {
             return null;
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao buscar detalhes no TMDB: " + e.getMessage());
+            throw new RuntimeException("Erro ao buscar detalhes no TMDB: ", e);
         }
     }
 
