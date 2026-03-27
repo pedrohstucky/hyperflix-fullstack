@@ -64,9 +64,7 @@ export function MovieList({ title, movies }: MovieListProps) {
         {movies.map((movie) => (
           <MovieCard
             onClick={() =>
-              navigate(`/title/${movie.id}`, {
-                state: { type: movie.type || "movie" },
-              })
+              navigate(`/title/${movie.type || "movie"}/${movie.id}`)
             }
             key={movie.id}
             title={movie.title}

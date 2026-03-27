@@ -110,9 +110,7 @@ function CategoryPage() {
                 <div key={movie.id} className="w-full">
                   <MovieCard
                     onClick={() =>
-                      navigate(`/title/${movie.id}`, {
-                        state: { type: movie.type || "movie" },
-                      })
+                      navigate(`/title/${movie.type || "movie"}/${movie.id}`)
                     }
                     key={movie.id}
                     title={movie.title}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { ChevronLeft, Play, Star } from "lucide-react";
 
 interface TitleDetailsData {
@@ -17,11 +17,10 @@ interface TitleDetailsData {
 }
 
 export default function TitleDetails() {
-  const { id } = useParams();
-  const location = useLocation();
+  const { type, id } = useParams();
   const navigate = useNavigate();
 
-  const type = location.state?.type || "movie";
+  const currentType = type || "movie";
 
   const [details, setDetails] = useState<TitleDetailsData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +32,7 @@ export default function TitleDetails() {
       try {
         setIsLoading(true);
         const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/v1/catalog/title/${type}/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/catalog/title/${currentType}/${id}`,
         );
         if (!response.ok) throw new Error("Erro ao buscar detalhes");
 

@@ -18,9 +18,7 @@ const HeroSection = ({ movies }: HeroSectionProps) => {
     <section className="w-full grid grid-cols-1 md:grid-cols-5 gap-6 mt-8">
       <HeroCardItem
         onClick={() =>
-          navigate(`/title/${firstMovie.id}`, {
-            state: { type: firstMovie.type || "movie" },
-          })
+          navigate(`/title/${firstMovie.type || "movie"}/${firstMovie.id}`)
         }
         className="md:col-span-2"
         title={firstMovie.title}
@@ -29,9 +27,7 @@ const HeroSection = ({ movies }: HeroSectionProps) => {
 
       <HeroCardItem
         onClick={() =>
-          navigate(`/title/${secondMovie.id}`, {
-            state: { type: secondMovie.type || "movie" },
-          })
+          navigate(`/title/${secondMovie.type || "movie"}/${secondMovie.id}`)
         }
         className="md:col-span-3"
         title={secondMovie.title}
