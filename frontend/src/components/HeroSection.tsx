@@ -9,10 +9,10 @@ interface HeroSectionProps {
 const HeroSection = ({ movies }: HeroSectionProps) => {
   const navigate = useNavigate();
 
+  if (!movies || movies.length === 0) return null;
+
   const firstMovie = movies[0];
   const secondMovie = movies[1];
-
-  if (!movies || movies.length === 0) return null;
 
   return (
     <section className="w-full grid grid-cols-1 md:grid-cols-5 gap-6 mt-8">
