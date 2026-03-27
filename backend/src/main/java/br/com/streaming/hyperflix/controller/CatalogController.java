@@ -42,11 +42,15 @@ public class CatalogController {
     public ResponseEntity<TitleDetailsResponseDTO> getTitleDetails(
             @PathVariable String type,
             @PathVariable Long id) {
-        TitleDetailsResponseDTO details = tmdbService.getTitleDetails(type, id);
+        try {
+            TitleDetailsResponseDTO details = tmdbService.getTitleDetails(type, id);
 
-        if (details == null) return ResponseEntity.notFound().build();
+            if (details == null) return ResponseEntity.notFound().build();
 
-        return ResponseEntity.ok(details);
+            return ResponseEntity.ok(details);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("/health")
