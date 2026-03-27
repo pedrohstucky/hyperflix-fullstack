@@ -6,7 +6,6 @@ import br.com.streaming.hyperflix.dto.TitleDetailsResponseDTO;
 import br.com.streaming.hyperflix.dto.tmdb.TmdbDetailsDTO;
 import br.com.streaming.hyperflix.dto.tmdb.TmdbPageResponseDTO;
 import br.com.streaming.hyperflix.dto.tmdb.TmdbResultDTO;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
@@ -19,12 +18,8 @@ public class TmdbService {
     private final RestClient restClient;
     private final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
-    public TmdbService(@Value("${tmdb.api.base-url}") String baseUrl,
-                       @Value("${tmdb.api.token}") String token) {
-        this.restClient = RestClient.builder()
-                .baseUrl(baseUrl)
-                .defaultHeader("Authorization", "Bearer " + token)
-                .build();
+    public TmdbService(RestClient tmdbRestClient) {
+        this.restClient = tmdbRestClient;
     }
 
     public List<MovieResponseDTO> getTrending() {

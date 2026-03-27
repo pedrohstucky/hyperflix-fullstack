@@ -136,7 +136,7 @@ class CatalogControllerTest {
 
     @Test
     @DisplayName("Deve retornar 200 e os detalhes quando o título for encontrado")
-    void shouldReturnTitleDetailsSuccesfully() throws Exception {
+    void shouldReturnTitleDetailsSuccessfully() throws Exception {
         String type = "movie";
         Long id = 550L;
 

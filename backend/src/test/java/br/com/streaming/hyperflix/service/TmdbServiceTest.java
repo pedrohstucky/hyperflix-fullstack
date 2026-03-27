@@ -16,10 +16,6 @@ class TmdbServiceTest {
 
     @Mock
     private RestClient restClient;
-    @Mock
-    private RestClient.RequestHeadersUriSpec requestHeadersUriSpec;
-    @Mock
-    private RestClient.ResponseSpec responseSpec;
 
     @InjectMocks
     private TmdbService tmdbService;
