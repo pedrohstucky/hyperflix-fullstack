@@ -51,7 +51,7 @@ function SearchPage() {
     };
 
     fetchSearch();
-  }, [query, initialData, data]);
+  }, [query, initialData]);
 
   const movies = data?.results || [];
 
