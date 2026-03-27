@@ -8,6 +8,7 @@ import br.com.streaming.hyperflix.dto.tmdb.TmdbPageResponseDTO;
 import br.com.streaming.hyperflix.dto.tmdb.TmdbResultDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
@@ -82,17 +83,25 @@ public class TmdbService {
         return new MoviePageResponseDTO(response.getPage(), response.getTotalPages(), movies);
     }
 
-    public TitleDetailsResponseDTO getTitleDetails(String type, Long id) {
-        if (!type.equals("movie") && !type.equals("tv")) throw new IllegalArgumentException("Type must be 'movie' or 'tv'");
+    public TitleDetailsResponseDTO getTitleDetals(String type, Long id) {
+        if (!type.equals("movie") && !type.equals("tv")) {
+            throw new IllegalArgumentException("Type must be 'movie' or 'tv'");
+        }
 
-        TmdbDetailsDTO response = restClient.get()
-                .uri("/{type}/{id}?language=pt-BR", type, id)
-                .retrieve()
-                .body(TmdbDetailsDTO.class);
+        try {
+            TmdbDetailsDTO response = restClient.get()
+                    .uri("/{type}/{id}?language=pt-BR", type, id)
+                    .retrieve()
+                    .body(TmdbDetailsDTO.class);
 
-        if (response == null) throw new RuntimeException("Título não encontrado");
+            if (response == null) return null;
 
-        return convertDetailsToFrontendDTO(response, type);
+            return convertDetailsToFrontendDTO(response, type);
+        } catch (HttpClientErrorException.NotFound e) {
+            return null;
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao buscar detalhes no TMDB: " + e.getMessage());
+        }
     }
 
     private TitleDetailsResponseDTO convertDetailsToFrontendDTO(TmdbDetailsDTO tmdbDTO, String type) {
