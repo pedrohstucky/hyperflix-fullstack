@@ -6,6 +6,7 @@ interface MovieCardProps {
   rating: number;
   year: number;
   className?: string;
+  onClick: () => void;
 }
 
 export function MovieCard({
@@ -14,10 +15,14 @@ export function MovieCard({
   rating,
   year,
   className,
+  onClick,
 }: MovieCardProps) {
   return (
-    <div
-      className={`flex flex-col gap-3 w-45 shrink-0 sm:w-60 cursor-pointer group select-none ${className || "w-45 sm:w-55"}`}
+    <button
+      type="button"
+      onClick={onClick}
+      className={`flex flex-col gap-3 w-45 shrink-0 sm:w-60 cursor-pointer focus-visible:ring-1 focus-visible:ring-white group select-none ${className || "w-45 sm:w-55"}`}
+      aria-label={`Ver detalhes de ${title}`}
     >
       <div className="overflow-hidden rounded-2xl aspect-2/3 bg-slate-800 hover:shadow-xl">
         <img
@@ -47,6 +52,6 @@ export function MovieCard({
           </div>
         </div>
       </div>
-    </div>
+    </button>
   );
 }

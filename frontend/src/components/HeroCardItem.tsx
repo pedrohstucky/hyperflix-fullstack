@@ -7,9 +7,15 @@ interface HeroCardItemProps {
   title: string;
   imageUrl: string;
   className?: string;
+  onClick: () => void;
 }
 
-const HeroCardItem = ({ title, imageUrl, className }: HeroCardItemProps) => {
+const HeroCardItem = ({
+  title,
+  imageUrl,
+  className,
+  onClick,
+}: HeroCardItemProps) => {
   const [bgColor, setBgColor] = useState<string>("#1e293b");
   const imgRef = useRef<HTMLImageElement>(null);
 
@@ -36,7 +42,7 @@ const HeroCardItem = ({ title, imageUrl, className }: HeroCardItemProps) => {
 
   return (
     <Card
-      onClick={() => {}}
+      onClick={onClick}
       className={`relative overflow-hidden w-full h-70 rounded-[20px] border-none text-white transition-transform duration-300 cursor-pointer hover:scale-[1.01] hover:shadow-2xl group text-left ${className || ""}`}
       style={{
         backgroundColor: bgColor,

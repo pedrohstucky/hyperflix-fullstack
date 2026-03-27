@@ -2,6 +2,7 @@ package br.com.streaming.hyperflix.controller;
 
 import br.com.streaming.hyperflix.dto.MoviePageResponseDTO;
 import br.com.streaming.hyperflix.dto.MovieResponseDTO;
+import br.com.streaming.hyperflix.dto.TitleDetailsResponseDTO;
 import br.com.streaming.hyperflix.service.TmdbService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,21 @@ public class CatalogController {
             @RequestParam(defaultValue = "1") Integer page
     ) {
         return ResponseEntity.ok(tmdbService.searchMovies(query, page));
+    }
+
+    @GetMapping("/title/{type}/{id}")
+    public ResponseEntity<TitleDetailsResponseDTO> getTitleDetails(
+            @PathVariable String type,
+            @PathVariable Long id) {
+        try {
+            TitleDetailsResponseDTO details = tmdbService.getTitleDetails(type, id);
+
+            if (details == null) return ResponseEntity.notFound().build();
+
+            return ResponseEntity.ok(details);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("/health")

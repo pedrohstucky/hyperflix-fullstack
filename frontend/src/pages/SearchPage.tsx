@@ -57,7 +57,7 @@ function SearchPage() {
 
   return (
     <div className="min-h-screen text-white font-sans w-full overflow-x-hidden">
-      <main className="px-6 md:px-10 pb-12 mt-6 animate-in fade-in duration-500">
+      <main className="px-6 md:px-20 pb-12 mt-6 animate-in fade-in duration-500">
         <div className="flex items-center gap-3 mb-8">
           <Button
             onClick={() => navigate("/")}
@@ -94,6 +94,10 @@ function SearchPage() {
               <div key={movie.id} className="w-full flex justify-center">
                 <div className="w-full max-w-55">
                   <MovieCard
+                    onClick={() =>
+                      navigate(`/title/${movie.type || "movie"}/${movie.id}`)
+                    }
+                    key={movie.id}
                     title={movie.title}
                     imageUrl={movie.imageUrl}
                     rating={movie.rating}
