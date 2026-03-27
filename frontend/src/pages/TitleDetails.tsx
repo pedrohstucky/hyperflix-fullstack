@@ -100,7 +100,7 @@ export default function TitleDetails() {
               <img
                 src={details.posterUrl}
                 alt={details.title}
-                className="w-65 md:w-80 rounded-2xl shadow-2xl object-cover"
+                className="w-60 md:w-80 rounded-2xl shadow-2xl object-cover"
               />
             ) : (
               <div className="w-55 md:w-80 aspect-2/3 bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center">

@@ -95,9 +95,7 @@ function SearchPage() {
                 <div className="w-full max-w-55">
                   <MovieCard
                     onClick={() =>
-                      navigate(`/title/${movie.id}`, {
-                        state: { type: movie.type || "movie" },
-                      })
+                      navigate(`/title/${movie.type || "movie"}/${movie.id}`)
                     }
                     key={movie.id}
                     title={movie.title}
